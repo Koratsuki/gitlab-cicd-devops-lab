@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-cicd-devops-lab
+  labels:
+    app: gitlab-cicd-devops-lab
+spec:
+  selector:
+    app: gitlab-cicd-devops-lab
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000

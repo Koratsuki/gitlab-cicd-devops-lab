@@ -5,7 +5,7 @@ metadata:
   labels:
     app: gitlab-cicd-devops-lab
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: gitlab-cicd-devops-lab

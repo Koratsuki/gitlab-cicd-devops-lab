@@ -2,15 +2,29 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gitlab-cicd-devops-lab
+  labels:
+    app: gitlab-cicd-devops-lab
   annotations:
     cert-manager.io/cluster-issuer: lab-ca
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 spec:
   tls:
-  - hosts: [devops-lab.lab.local]
+  - hosts:
+    - devops-lab.lab.local
+    - gitlab-app.lab.local
     secretName: devops-lab-tls
   rules:
   - host: devops-lab.lab.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gitlab-cicd-devops-lab
+            port:
+              number: 80
+  - host: gitlab-app.lab.local
     http:
       paths:
       - path: /

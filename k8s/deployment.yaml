@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/koratsuki/gitlab-cicd-devops-lab:sha-6859c1c
+        image: ghcr.io/koratsuki/gitlab-cicd-devops-lab:sha-27f0994
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000

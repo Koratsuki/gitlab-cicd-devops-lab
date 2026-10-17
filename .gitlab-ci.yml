@@ -1,0 +1,63 @@
+stages:
+  - test
+  - security
+  - build
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE"
+
+cache:
+  paths:
+    - .cache/pip/
+
+# ----------------------------------------
+# TEST
+# ----------------------------------------
+
+unit_tests:
+  stage: test
+  image: python:3.13-slim
+
+  before_script:
+    - pip install --no-cache-dir -r requirements.txt
+
+  script:
+    - pytest -v
+
+# ----------------------------------------
+# SECURITY
+# ----------------------------------------
+
+dependency_scan:
+  stage: security
+  image: python:3.13-slim
+
+  before_script:
+    - pip install --no-cache-dir pip-audit
+
+  script:
+    - pip-audit -r requirements.txt
+
+# ----------------------------------------
+# BUILD
+# ----------------------------------------
+
+docker_build:
+  stage: build
+  image: docker:27-cli
+
+  services:
+    - name: docker:27-dind
+      alias: docker
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+
+  before_script:
+    - docker info
+
+  script:
+    - docker build -t "$DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA" .
+    

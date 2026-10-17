@@ -643,7 +643,7 @@ El objetivo final es disponer de un flujo automatizado de entrega de software de
 
 ---
 
-## 👨�💻 Author
+## 👨‍💻 Author
 
 **Leslie León Sinclair**
 

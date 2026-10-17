@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-traefik-to-app
+spec:
+  podSelector:
+    matchLabels:
+      app: gitlab-cicd-devops-lab
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: rke2-traefik
+    ports:
+    - protocol: TCP
+      port: 8000
+  - from:
+    - ipBlock:
+        cidr: 192.168.20.0/24
+    ports:
+    - protocol: TCP
+      port: 8000
